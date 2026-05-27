@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoShare Conakry — Transport rapide via WhatsApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-deep: #0A1628;
+            --blue-mid: #1A3A6B;
+            --blue-bright: #0288D1;
+            --cyan: #00E5FF;
+            --white: #F8FAFF;
+            --gray: #8A9BB5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--blue-deep);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            position: sticky;
+            top: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--cyan); }
+
+        nav a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--white); }
+
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+
+        .btn-nav {
+            background: var(--cyan);
+            color: var(--blue-deep) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600 !important;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(2, 136, 209, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--cyan);
+            font-weight: 500;
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--cyan);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        h1 span {
+            color: var(--cyan);
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: var(--blue-deep);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* STATS */
+        .stats {
+            display: flex;
+            gap: 48px;
+            padding: 40px 48px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-wrap: wrap;
+        }
+
+        .stat h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--cyan);
+        }
+
+        .stat p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        /* HOW IT WORKS */
+        .section {
+            padding: 80px 48px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .section h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 48px;
+            letter-spacing: -0.5px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .step {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 32px 24px;
+            transition: border-color 0.2s, transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .step:hover {
+            border-color: rgba(0, 229, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .step:hover::before { opacity: 1; }
+
+        .step-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: rgba(0, 229, 255, 0.15);
+            margin-bottom: 16px;
+        }
+
+        .step h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* FEATURES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .feature h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: var(--gray);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .cta {
+            margin: 0 48px 80px;
+            background: linear-gradient(135deg, var(--blue-mid) 0%, rgba(2, 136, 209, 0.3) 100%);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            border-radius: 24px;
+            padding: 64px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '🚗';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.04;
+            right: -40px;
+            bottom: -40px;
+        }
+
+        .cta h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 48px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand p {
+            color: var(--gray);
+            font-size: 0.875rem;
+            line-height: 1.7;
+            margin-top: 12px;
+        }
+
+        footer h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--white);
+        }
+
+        footer ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        footer ul li {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        footer ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer ul li a:hover { color: var(--white); }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+            transition: transform 0.2s;
+            z-index: 999;
+        }
+
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .hero { padding: 60px 24px; }
+            .stats { padding: 32px 24px; gap: 32px; }
+            .section { padding: 60px 24px; }
+            .cta { margin: 0 24px 60px; padding: 40px 24px; }
+            footer { grid-template-columns: 1fr; padding: 40px 24px; }
+            .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">Go<span>Share</span></div>
+    <div class="nav-links">
+        <a href="#comment">Comment ça marche</a>
+        <a href="#chauffeurs">Chauffeurs</a>
+        <a href="#contact">Contact</a>
+        <a href="https://wa.me/15556555090" class="btn-nav">Réserver maintenant</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="badge">Disponible à Conakry</div>
+        <h1>Transport rapide via <span>WhatsApp</span></h1>
+        <p>GoShare connecte passagers et chauffeurs à Conakry en quelques secondes. Pas d'application à télécharger — tout se passe sur WhatsApp.</p>
+        <div class="hero-buttons">
+            <a href="https://wa.me/15556555090?text=menu" class="btn-primary">
+                🚗 Réserver une place
+            </a>
+            <a href="#comment" class="btn-secondary">Comment ça marche</a>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+    <div class="stat">
+        <h3>0</h3>
+        <p>Application à télécharger</p>
+    </div>
+    <div class="stat">
+        <h3>2 min</h3>
+        <p>Pour trouver un chauffeur</p>
+    </div>
+    <div class="stat">
+        <h3>100%</h3>
+        <p>Via WhatsApp</p>
+    </div>
+    <div class="stat">
+        <h3>Conakry</h3>
+        <p>Disponible maintenant</p>
+    </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="comment">
+    <div class="section-label">Processus</div>
+    <h2>Simple comme un message</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">01</div>
+            <h3>Envoyez "menu"</h3>
+            <p>Écrivez simplement "menu" au numéro GoShare sur WhatsApp pour démarrer.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">02</div>
+            <h3>Choisissez votre rôle</h3>
+            <p>Indiquez si vous êtes passager ou chauffeur. Le bot vous guide étape par étape.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">03</div>
+            <h3>Trouvez une correspondance</h3>
+            <p>Le système trouve automatiquement un chauffeur disponible sur votre trajet.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">04</div>
+            <h3>Confirmez avec un code</h3>
+            <p>Recevez un code unique pour confirmer votre place. Payez en cash ou Orange Money.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" style="padding-top: 0;" id="chauffeurs">
+    <div class="section-label">Avantages</div>
+    <h2>Pourquoi choisir GoShare ?</h2>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="feature-icon">📱</div>
+            <h3>Zéro application</h3>
+            <p>Tout se passe sur WhatsApp que vous utilisez déjà. Pas de téléchargement, pas de compte à créer.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Réservation instantanée</h3>
+            <p>Trouvez un chauffeur en moins de 2 minutes. Le système gère tout automatiquement.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h3>Code de sécurité</h3>
+            <p>Chaque réservation génère un code unique. La place n'est confirmée qu'après validation du code.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">💰</div>
+            <h3>Prix transparents</h3>
+            <p>Voyez le prix avant de confirmer. Payez en cash ou Orange Money directement au chauffeur.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🚗</div>
+            <h3>Pour les chauffeurs</h3>
+            <p>Remplissez votre véhicule facilement. Enregistrez votre trajet et recevez des passagers automatiquement.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📍</div>
+            <h3>Tous les trajets</h3>
+            <p>Ratoma, Kipé, Bambeto, Matoto, Kaloum, Gbessia — tous les quartiers de Conakry couverts.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+    <h2>Prêt à voyager avec GoShare ?</h2>
+    <p>Envoyez simplement "menu" sur WhatsApp pour commencer</p>
+    <a href="https://wa.me/15556555090?text=menu" class="btn-primary">
+        💬 Démarrer sur WhatsApp
+    </a>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+    <div class="footer-brand">
+        <div class="logo">Go<span>Share</span></div>
+        <p>Service de transport à la demande via WhatsApp. Connectons passagers et chauffeurs à Conakry.</p>
+    </div>
+    <div>
+        <h4>Service</h4>
+        <ul>
+            <li><a href="#comment">Comment ça marche</a></li>
+            <li><a href="#chauffeurs">Pour les chauffeurs</a></li>
+            <li><a href="https://wa.me/15556555090?text=menu">Réserver maintenant</a></li>
+        </ul>
+    </div>
+    <div>
+        <h4>Contact</h4>
+        <ul>
+            <li>📍 Conakry, Guinée</li>
+            <li>📱 WhatsApp : +1 (555) 655-5090</li>
+            <li>✉️ goshare.conakry@gmail.com</li>
+        </ul>
+    </div>
+</footer>
+
+<div class="footer-bottom">
+    <span>© 2026 GoShare Conakry. Tous droits réservés.</span>
+    <span>Politique de confidentialité · Conditions d'utilisation</span>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/15556555090?text=menu" class="whatsapp-float" title="Réserver sur WhatsApp">💬</a>
+
+</body>
+</html>
